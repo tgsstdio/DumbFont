@@ -56,7 +56,7 @@ namespace DumbFont
             CharSet = CharSet.Ansi,
             BestFitMapping = false,
             ThrowOnUnmappableChar = true)]
-        static extern FT_Error FT_New_Face_4(IntPtr library, string filepathname, FT_Long4 face_index, ref FT_FaceRec4 aface);
+        static extern FT_Error FT_New_Face_4(IntPtr library, string filepathname, FT_Long4 face_index, ref FT_Face aface);
 
 
         [DllImport(FontModule.FreetypeDll,
@@ -65,17 +65,17 @@ namespace DumbFont
             CharSet = CharSet.Ansi,
             BestFitMapping = false,
             ThrowOnUnmappableChar = true)]
-        static extern FT_Error FT_New_Face_8(IntPtr library, string filepathname, FT_Long8 face_index, ref FT_FaceRec8 aface);
+        static extern FT_Error FT_New_Face_8(IntPtr library, string filepathname, FT_Long8 face_index, ref FT_Face aface);
 
         public FT_Error NewFace(FontLibrary library, string path, int face_index)
-        {
+        {           
             if (Form == LongForm.Long4)
             {
-                return FT_New_Face_4(library.Handle, path, face_index, ref mFace4);
+                return FT_New_Face_4(library.Handle, path, face_index, ref mHandle);
             }
             else
             {
-                return FT_New_Face_8(library.Handle, path, ToLong8(face_index), ref mFace8);
+                return FT_New_Face_8(library.Handle, path, ToLong8(face_index), ref mHandle);
             }
         }
 

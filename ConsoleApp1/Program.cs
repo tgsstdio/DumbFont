@@ -9,7 +9,10 @@ namespace ConsoleApp1
     {
         static void FT_CHECK(FT_Error check)
         {
-
+            if (check != FT_Error.Ok)
+            {
+                throw new InvalidOperationException(check.ToString());
+            }
         }
 
         struct fd_Render
@@ -127,7 +130,7 @@ namespace ConsoleApp1
                 var library = new DumbFont.FontLibrary();
                 FT_CHECK(library.Init_FreeType());
                 var longForm = DetrimineLongForm();
-                load_font(library, "", longForm);
+                load_font(library, "Noto Sans 700.ttf", longForm);
                 FT_CHECK(library.Done_FreeType());
             }
             catch(Exception e)
