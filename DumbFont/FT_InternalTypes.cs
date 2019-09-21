@@ -427,15 +427,15 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_Vector4
     {
-        FT_Pos4 x;
-        FT_Pos4 y;
+        internal FT_Pos4 x;
+        internal FT_Pos4 y;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     struct FT_Vector8
     {
-        FT_Pos8 x;
-        FT_Pos8 y;
+        internal FT_Pos8 x;
+        internal FT_Pos8 y;
     }
 
     [StructLayout(LayoutKind.Sequential)]

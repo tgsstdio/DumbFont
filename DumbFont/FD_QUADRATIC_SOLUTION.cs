@@ -1,0 +1,11 @@
+﻿namespace DumbFont
+{
+    public enum FD_QUADRATIC_SOLUTION
+    {
+        FD_QUADRATIC_SOLUTION_NONE,
+        FD_QUADRATIC_SOLUTION_ALL,
+        FD_QUADRATIC_SOLUTION_TOUCH,
+        FD_QUADRATIC_SOLUTION_ONE,
+        FD_QUADRATIC_SOLUTION_TWO,
+    };
+}

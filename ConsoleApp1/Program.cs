@@ -59,7 +59,7 @@ namespace ConsoleApp1
                 var glyph_index = face.GetCharIndex(c);
                 FT_CHECK(face.LoadGlyph(glyph_index, LoadFlags.NoHinting, LoadTarget.Default));
 
-                face.GetGlyphOutline();
+                face.GetGlyphOutline(c);
 
                 //fd_outline_convert(&face->glyph->outline, o, c);
 

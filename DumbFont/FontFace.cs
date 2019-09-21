@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace DumbFont
@@ -35,8 +33,6 @@ namespace DumbFont
     public class FontFace
     {
         private FT_Face mHandle;
-        private FT_FaceRec4 mFace4;
-        private FT_FaceRec8 mFace8;
 
         public FontFace(LongForm form)
         {
@@ -218,114 +214,9 @@ namespace DumbFont
             }
         }
 
-        #endregion
-
+#endregion
+        
         #region GetGlyphOutline methods
-
-        class fd_Outline
-        {
-            internal float min_x;
-            internal float min_y;
-            internal float max_x;
-            internal float max_y;
-            internal int num_of_contours;
-            internal int num_of_points;
-
-            internal List<fd_ContourRange> contours;
-            public fd_Outline()
-            {
-                contours = new List<fd_ContourRange>();
-            }
-
-            internal int MoveTo_4(IntPtr to, IntPtr user)
-            {
-                var to_0 = Marshal.PtrToStructure<FT_Vector4>(to);
-
-                vec2 p = { 0 };
-
-                if (num_of_contours > 0)
-                {
-                    contours[num_of_contours - 1].end = (uint) num_of_points - 1;
-                    add_outline_point(p);
-                }
-
-                Debug.Assert(num_of_points % 2 == 0);
-
-                var range = new fd_ContourRange
-                {
-                    begin = num_of_points,
-                    end = uint.MaxValue,
-                };
-                add_outline_contour(range);
-
-                convert_point(to_0, p);
-                add_outline_point(p);
-                return 0;
-            }
-
-            private void add_outline_point(vec2 p)
-            {
-                throw new NotImplementedException();
-            }
-
-            private void convert_point(FT_Vector4 to_0, vec2 p)
-            {
-                throw new NotImplementedException();
-            }
-
-            private void add_outline_contour(fd_ContourRange range)
-            {
-                throw new NotImplementedException();
-            }
-
-            internal int LineTo_4(IntPtr to, IntPtr user)
-            {
-                var to_0 = Marshal.PtrToStructure<FT_Vector4>(to);
-            }
-
-            internal int ConicTo_4(IntPtr control, IntPtr to, IntPtr user)
-            {
-                var control_0 = Marshal.PtrToStructure<FT_Vector4>(control);
-                var to_0 = Marshal.PtrToStructure<FT_Vector4>(to);
-            }
-
-            internal int CubicTo_4(IntPtr control, IntPtr control2, IntPtr to, IntPtr user)
-            {
-                var control_0 = Marshal.PtrToStructure<FT_Vector4>(control);
-                var control2_0 = Marshal.PtrToStructure<FT_Vector4>(control2);
-                var to_0 = Marshal.PtrToStructure<FT_Vector4>(to);
-            }
-
-            internal int MoveTo_8(IntPtr to, IntPtr user)
-            {
-                throw new NotImplementedException();
-            }
-
-            internal int LineTo_8(IntPtr to, IntPtr user)
-            {
-                throw new NotImplementedException();
-            }
-
-            internal int ConicTo_8(IntPtr control, IntPtr to, IntPtr user)
-            {
-                throw new NotImplementedException();
-            }
-
-            internal int CubicTo_8(IntPtr control, IntPtr control2, IntPtr to, IntPtr user)
-            {
-                throw new NotImplementedException();
-            }
-
-            internal void fd_outline_fix_thin_lines()
-            {
-                throw new NotImplementedException();
-            }
-
-            internal void fd_outline_make_cells()
-            {
-                throw new NotImplementedException();
-            }
-        }
         fd_Outline fd_outline_convert(FT_Outline outline, char c)
         {
             if (c == '&')
@@ -336,11 +227,11 @@ namespace DumbFont
             var o = fd_outline_decompose(outline);
             //fd_outline_fix_corners(o);
             //fd_outline_subdivide(o);
-            o.fd_outline_fix_thin_lines();
-            o.fd_outline_make_cells();
+            var dst = fd_Outline.fd_outline_fix_thin_lines(o);
+            dst = fd_Outline.fd_outline_make_cells(dst);
             //}
 
-            return o;
+            return dst;
             //printf("  %d ms\n", clock() - t);
         }
 
@@ -395,10 +286,13 @@ namespace DumbFont
                     throw new InvalidOperationException("FT_Outline_Get_BBox_4 failed");
                 }
 
-                o.min_x = (float)bbox4.xMin / 64.0f;
-                o.min_y = (float)bbox4.yMin / 64.0f;
-                o.max_x = (float)bbox4.xMax / 64.0f;
-                o.max_y = (float)bbox4.yMax / 64.0f;
+                o.bbox = new fd_Rect
+                {
+                    min_x = (float)bbox4.xMin / 64.0f,
+                    min_y = (float)bbox4.yMin / 64.0f,
+                    max_x = (float)bbox4.xMax / 64.0f,
+                    max_y = (float)bbox4.yMax / 64.0f,
+                };
 
                 var funcs = new FT_Outline_Funcs_4
                 {
@@ -424,10 +318,13 @@ namespace DumbFont
                     throw new InvalidOperationException("FT_Outline_Get_BBox_8 failed");
                 }
 
-                o.min_x = (float)bbox8.xMin / 64.0f;
-                o.min_y = (float)bbox8.yMin / 64.0f;
-                o.max_x = (float)bbox8.xMax / 64.0f;
-                o.max_y = (float)bbox8.yMax / 64.0f;
+                o.bbox = new fd_Rect
+                {
+                    min_x = (float)bbox8.xMin / 64.0f,
+                    min_y = (float)bbox8.yMin / 64.0f,
+                    max_x = (float)bbox8.xMax / 64.0f,
+                    max_y = (float)bbox8.yMax / 64.0f,
+                };
 
                 var funcs = new FT_Outline_Funcs_8
                 {
@@ -437,7 +334,7 @@ namespace DumbFont
                     cubic_to = Marshal.GetFunctionPointerForDelegate<CubicToFunc_8>(o.CubicTo_8),
                 };
 
-                err = FT_Outline_Decompose_8(ref src, ref funcs, o);
+                err = FT_Outline_Decompose_8(ref src, ref funcs, IntPtr.Zero);
 
                 if (err != FT_Error.Ok)
                 {
@@ -445,36 +342,31 @@ namespace DumbFont
                 }
             }
 
-            if (o.num_of_contours > 0)
+            if (o.contours.Count > 0)
             {
-                o.contours[o.num_of_contours - 1].end = (uint)o.num_of_points - 1;
+                o.contours[o.contours.Count - 1].end = (uint)o.points.Count - 1;
             }
 
             return o;
         }
 
-        public void GetGlyphOutline(char c)
+        public fd_Outline GetGlyphOutline(char c)
         {
             if (mHandle == IntPtr.Zero)
-                return;
+                throw new InvalidOperationException("GetGlyphOutline");
 
             if (Form == LongForm.Long4)
             {
                 FT_FaceRec4 face4 = Marshal.PtrToStructure<FT_FaceRec4>(mHandle);
                 // OR use OffsetOf() and ReadPointer()
                 var glyphData = Marshal.PtrToStructure<FT_GlyphSlotRec_4>(face4.glyph);
-                var outline = glyphData.outline;
-
-                var output = fd_outline_convert(outline, c);
+                return fd_outline_convert(glyphData.outline, c);
             }
             else // if (Form == LongForm.Long8)
             {
                 var face8= Marshal.PtrToStructure<FT_FaceRec8>(mHandle);
-                var glyphPtr8 = face8.glyph;
                 var glyphData = Marshal.PtrToStructure<FT_GlyphSlotRec_8>(face8.glyph);
-                var outline = glyphData.outline;
-
-                var output = fd_outline_convert(outline, c);
+                return fd_outline_convert(glyphData.outline, c);
             }
         }
 
