@@ -28,8 +28,11 @@ namespace DumbFont
     using FT_ULong4 = System.UInt32;
     using FT_ULong8 = System.UInt64;
 
+    using FT_Face = System.IntPtr;
+
     public class FontFace
     {
+        private FT_Face mHandle;
         private FT_FaceRec4 mFace4;
         private FT_FaceRec8 mFace8;
 
@@ -83,22 +86,22 @@ namespace DumbFont
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Done_Face",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_Error FT_Done_Face_4(ref FT_FaceRec4 face);
+        static extern FT_Error FT_Done_Face_4(FT_Face face);
 
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Done_Face",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_Error FT_Done_Face_8(ref FT_FaceRec8 face);
+        static extern FT_Error FT_Done_Face_8(FT_Face face);
 
         public FT_Error DoneFace()
         {
             if (Form == LongForm.Long4)
             {
-                return FT_Done_Face_4(ref mFace4);
+                return FT_Done_Face_4(mHandle);
             }
             else
             {
-                return FT_Done_Face_8(ref mFace8);
+                return FT_Done_Face_8(mHandle);
             }
         }
 
@@ -110,7 +113,7 @@ namespace DumbFont
             EntryPoint = "FT_Set_Char_Size",
             CallingConvention = FontModule.CallConvention)]
         static extern FT_Error FT_Set_Char_Size_4(
-            ref FT_FaceRec4 face,
+            FT_Face face,
             FT_F26Dot6_4 char_width,
             FT_F26Dot6_4 char_height,
             FT_UInt horz_resolution,
@@ -120,7 +123,7 @@ namespace DumbFont
             EntryPoint = "FT_Set_Char_Size",
             CallingConvention = FontModule.CallConvention)]
         static extern FT_Error FT_Set_Char_Size_8(
-            ref FT_FaceRec8 face,
+            FT_Face face,
             FT_F26Dot6_8 char_width,
             FT_F26Dot6_8 char_height,
             FT_UInt horz_resolution,
@@ -135,7 +138,7 @@ namespace DumbFont
             if (Form == LongForm.Long4)
             {
                 return FT_Set_Char_Size_4(
-                    ref mFace4,
+                    mHandle,
                     char_width.value,
                     char_height.value,
                     horz_resolution,
@@ -144,7 +147,7 @@ namespace DumbFont
             else
             {
                 return FT_Set_Char_Size_8(
-                    ref mFace8,
+                    mHandle,
                     char_width.value8,
                     char_height.value8,
                     horz_resolution,
@@ -159,12 +162,12 @@ namespace DumbFont
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Get_Char_Index",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_UInt FT_Get_Char_Index_4(ref FT_FaceRec4 face, FT_ULong4 charcode);
+        static extern FT_UInt FT_Get_Char_Index_4(FT_Face face, FT_ULong4 charcode);
 
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Get_Char_Index",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_UInt FT_Get_Char_Index_8(ref FT_FaceRec8 face, FT_ULong8 charcode);
+        static extern FT_UInt FT_Get_Char_Index_8(FT_Face face, FT_ULong8 charcode);
 
         static FT_ULong4 ToULong4(UInt64 value)
         {
@@ -180,11 +183,11 @@ namespace DumbFont
                     throw new ArgumentOutOfRangeException(nameof(charcode));
                 }
 
-                return FT_Get_Char_Index_4(ref mFace4, ToULong4(charcode));
+                return FT_Get_Char_Index_4(mHandle, ToULong4(charcode));
             }
             else
             {
-                return FT_Get_Char_Index_8(ref mFace8, charcode);
+                return FT_Get_Char_Index_8(mHandle, charcode);
             }
         }
 
@@ -195,22 +198,22 @@ namespace DumbFont
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Load_Glyph",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_Error FT_Load_Glyph_4(ref FT_FaceRec4 face, FT_UInt glyph_index, Int32 load_flags);
+        static extern FT_Error FT_Load_Glyph_4(FT_Face face, FT_UInt glyph_index, Int32 load_flags);
 
         [DllImport(FontModule.FreetypeDll,
             EntryPoint = "FT_Load_Glyph",
             CallingConvention = FontModule.CallConvention)]
-        static extern FT_Error FT_Load_Glyph_8(ref FT_FaceRec8 face, FT_UInt glyph_index, Int32 load_flags);
+        static extern FT_Error FT_Load_Glyph_8(FT_Face face, FT_UInt glyph_index, Int32 load_flags);
 
         public FT_Error LoadGlyph(uint glyph_index, LoadFlags flags, LoadTarget target)
         {
             if (Form == LongForm.Long4)
             {
-                return FT_Load_Glyph_4(ref mFace4, glyph_index, ((Int32) flags | (Int32)target));
+                return FT_Load_Glyph_4(mHandle, glyph_index, ((Int32) flags | (Int32)target));
             }
             else
             {
-                return FT_Load_Glyph_8(ref mFace8, glyph_index, ((Int32)flags | (Int32)target));
+                return FT_Load_Glyph_8(mHandle, glyph_index, ((Int32)flags | (Int32)target));
             }
         }
 

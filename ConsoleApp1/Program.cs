@@ -38,7 +38,7 @@ namespace ConsoleApp1
 
             FT_CHECK(face.SetCharSize(
                 form.FromInt32(0),
-                form.FromInt32(1000 * 64),
+                form.FromInt32(1000),
                 96,
                 96));
 
@@ -48,7 +48,7 @@ namespace ConsoleApp1
             for (uint i = 0; i< NUMBER_OF_GLYPHS; i++)
             {
                 char c = Convert.ToChar(Convert.ToInt32(' ') + i);
-                Console.WriteLine("{0}", c);
+                //Console.WriteLine("{0}", c);
 
                 //fd_Outline o = r.outlines[i];
                 //fd_HostGlyphInfo hgi = r.glyph_infos[i];
