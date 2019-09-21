@@ -59,6 +59,8 @@ namespace ConsoleApp1
                 var glyph_index = face.GetCharIndex(c);
                 FT_CHECK(face.LoadGlyph(glyph_index, LoadFlags.NoHinting, LoadTarget.Default));
 
+                face.GetGlyphOutline();
+
                 //fd_outline_convert(&face->glyph->outline, o, c);
 
                 //hgi->bbox = o->bbox;
@@ -66,7 +68,7 @@ namespace ConsoleApp1
 
 
                 //total_points += o->num_of_points;
-                //total_cells += o->cell_count_x* o->cell_count_y;
+                //total_cells += o->cell_count_x* o->cell_count_y;                
             }
 
             //r->glyph_info_size = sizeof(fd_DeviceGlyphInfo) * NUMBER_OF_GLYPHS;

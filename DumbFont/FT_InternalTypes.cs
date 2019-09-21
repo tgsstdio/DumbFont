@@ -68,19 +68,19 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_BBox4
     {
-        FT_Pos4 xMin;
-        FT_Pos4 yMin;
-        FT_Pos4 xMax;
-        FT_Pos4 yMax;
+        internal FT_Pos4 xMin;
+        internal FT_Pos4 yMin;
+        internal FT_Pos4 xMax;
+        internal FT_Pos4 yMax;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     struct FT_BBox8
     {
-        FT_Pos8 xMin;
-        FT_Pos8 yMin;
-        FT_Pos8 xMax;
-        FT_Pos8 yMax;
+        internal FT_Pos8 xMin;
+        internal FT_Pos8 yMin;
+        internal FT_Pos8 xMax;
+        internal FT_Pos8 yMax;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -105,46 +105,46 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_FaceRec4
     {
-        FT_Long4 num_faces;
-        FT_Long4 face_index;
+        internal FT_Long4 num_faces;
+        internal FT_Long4 face_index;
 
-        FT_Long4 face_flags;
-        FT_Long4 style_flags;
+        internal FT_Long4 face_flags;
+        internal FT_Long4 style_flags;
 
-        FT_Long4 num_glyphs;
+        internal FT_Long4 num_glyphs;
 
-        FT_String family_name;
-        FT_String style_name;
+        internal FT_String family_name;
+        internal FT_String style_name;
 
-        FT_Int num_fixed_sizes;
-        IntPtr available_sizes; // (FT_Bitmap_Size[4|8] *)
+        internal FT_Int num_fixed_sizes;
+        internal IntPtr available_sizes; // (FT_Bitmap_Size[4|8] *)
 
-        FT_Int num_charmaps;
-        IntPtr charmaps; // FT_CharMap* => FT_CharMapRec_
+        internal FT_Int num_charmaps;
+        internal IntPtr charmaps; // FT_CharMap* => FT_CharMapRec_
 
-        FT_Generic generic;
+        internal FT_Generic generic;
 
         /*# The following member variables (down to `underline_thickness`) */
         /*# are only relevant to scalable outlines; cf. @FT_Bitmap_Size    */
         /*# for bitmap fonts.                                              */
-        FT_BBox4 bbox;
+        internal FT_BBox4 bbox;
 
-        FT_UShort units_per_EM;
-        FT_Short ascender;
-        FT_Short descender;
-        FT_Short height;
+        internal FT_UShort units_per_EM;
+        internal  FT_Short ascender;
+        internal FT_Short descender;
+        internal FT_Short height;
 
-        FT_Short max_advance_width;
-        FT_Short max_advance_height;
+        internal FT_Short max_advance_width;
+        internal FT_Short max_advance_height;
 
-        FT_Short underline_position;
-        FT_Short underline_thickness;
+        internal FT_Short underline_position;
+        internal FT_Short underline_thickness;
 
         // typedef struct FT_GlyphSlotRec_*  FT_GlyphSlot;
-        IntPtr glyph;
+        internal IntPtr glyph;
         //   typedef struct FT_SizeRec_*  FT_Size_[4|8];
-        IntPtr size;
-        FT_CharMap charmap;
+        internal IntPtr size;
+        internal FT_CharMap charmap;
 
         /*@private begin */
 
@@ -164,46 +164,46 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_FaceRec8
     {
-        FT_Long8 num_faces;
-        FT_Long8 face_index;
+        internal FT_Long8 num_faces;
+        internal FT_Long8 face_index;
 
-        FT_Long8 face_flags;
-        FT_Long8 style_flags;
+        internal FT_Long8 face_flags;
+        internal FT_Long8 style_flags;
 
-        FT_Long8 num_glyphs;
+        internal FT_Long8 num_glyphs;
 
-        FT_String family_name;
-        FT_String style_name;
+        internal FT_String family_name;
+        internal FT_String style_name;
 
-        FT_Int num_fixed_sizes;
-        IntPtr available_sizes; // (FT_Bitmap_Size[4|8] *)
+        internal FT_Int num_fixed_sizes;
+        internal IntPtr available_sizes; // (FT_Bitmap_Size[4|8] *)
 
-        FT_Int num_charmaps;
-        IntPtr charmaps; // FT_CharMap* => FT_CharMapRec_
+        internal FT_Int num_charmaps;
+        internal IntPtr charmaps; // FT_CharMap* => FT_CharMapRec_
 
-        FT_Generic generic;
+        internal FT_Generic generic;
 
         /*# The following member variables (down to `underline_thickness`) */
         /*# are only relevant to scalable outlines; cf. @FT_Bitmap_Size    */
         /*# for bitmap fonts.                                              */
-        FT_BBox8 bbox;
+        internal FT_BBox8 bbox;
 
-        FT_UShort units_per_EM;
-        FT_Short ascender;
-        FT_Short descender;
-        FT_Short height;
+        internal FT_UShort units_per_EM;
+        internal FT_Short ascender;
+        internal FT_Short descender;
+        internal FT_Short height;
 
-        FT_Short max_advance_width;
-        FT_Short max_advance_height;
+        internal FT_Short max_advance_width;
+        internal FT_Short max_advance_height;
 
-        FT_Short underline_position;
-        FT_Short underline_thickness;
+        internal FT_Short underline_position;
+        internal FT_Short underline_thickness;
 
         // typedef struct FT_GlyphSlotRec_*  FT_GlyphSlot;
-        IntPtr glyph;
+        internal IntPtr glyph;
         //   typedef struct FT_SizeRec_*  FT_Size_[4|8];
-        IntPtr size;
-        FT_CharMap charmap;
+        internal IntPtr size;
+        internal FT_CharMap charmap;
 
         /*@private begin */
 
@@ -321,36 +321,74 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_GlyphSlotRec_4
     {
-        IntPtr library; // IntPtr
-        IntPtr face; // FT_Face
-                     // typedef struct FT_GlyphSlotRec_*  FT_GlyphSlot;
-        IntPtr next;
-        FT_UInt glyph_index; /* new in 2.10; was reserved previously */
-        FT_Generic generic;
+        internal IntPtr library; // IntPtr
+        internal IntPtr face; // FT_Face
+                              // typedef struct FT_GlyphSlotRec_*  FT_GlyphSlot;
+        internal IntPtr next;
+        internal FT_UInt glyph_index; /* new in 2.10; was reserved previously */
+        internal FT_Generic generic;
 
-        FT_Glyph_Metrics_4 metrics;
-        FT_Fixed4 linearHoriAdvance;
-        FT_Fixed4 linearVertAdvance;
-        FT_Vector4 advance;
+        internal FT_Glyph_Metrics_4 metrics;
+        internal FT_Fixed4 linearHoriAdvance;
+        internal FT_Fixed4 linearVertAdvance;
+        internal FT_Vector4 advance;
 
-        FT_GlyphFormat format; // Uint32
+        internal FT_GlyphFormat format; // Uint32
 
-        FT_Bitmap bitmap;
-        FT_Int bitmap_left;
-        FT_Int bitmap_top;
+        internal FT_Bitmap bitmap;
+        internal FT_Int bitmap_left;
+        internal FT_Int bitmap_top;
 
-        FT_Outline outline;
+        internal FT_Outline outline;
 
-        FT_UInt num_subglyphs;
-        IntPtr subglyphs; // FT_SubGlyph => FT_SubGlyphRec_[4|8]
+        internal FT_UInt num_subglyphs;
+        internal IntPtr subglyphs; // FT_SubGlyph => FT_SubGlyphRec_[4|8]
 
-        IntPtr control_data; // IntPtr
-        FT_Long4 control_len; // long => FT_Long4
+        internal IntPtr control_data; // IntPtr
+        internal FT_Long4 control_len; // long => FT_Long4
 
-        FT_Pos4 lsb_delta;
-        FT_Pos4 rsb_delta;
+        internal FT_Pos4 lsb_delta;
+        internal FT_Pos4 rsb_delta;
 
-        IntPtr other; // void*
+        internal IntPtr other; // void*
+
+        //   typedef struct FT_Slot_InternalRec_*  FT_Slot_Internal;
+        IntPtr @internal;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct FT_GlyphSlotRec_8
+    {
+        internal IntPtr library; // IntPtr
+        internal IntPtr face; // FT_Face
+                              // typedef struct FT_GlyphSlotRec_*  FT_GlyphSlot;
+        internal IntPtr next;
+        internal FT_UInt glyph_index; /* new in 2.10; was reserved previously */
+        internal FT_Generic generic;
+
+        internal FT_Glyph_Metrics_8 metrics;
+        internal FT_Fixed8 linearHoriAdvance;
+        internal FT_Fixed8 linearVertAdvance;
+        internal FT_Vector8 advance;
+
+        internal FT_GlyphFormat format; // Uint32
+
+        internal FT_Bitmap bitmap;
+        internal FT_Int bitmap_left;
+        internal FT_Int bitmap_top;
+
+        internal FT_Outline outline;
+
+        internal FT_UInt num_subglyphs;
+        internal IntPtr subglyphs; // FT_SubGlyph => FT_SubGlyphRec_[4|8]
+
+        internal IntPtr control_data; // IntPtr
+        internal FT_Long8 control_len; // long => FT_Long4
+
+        internal FT_Pos8 lsb_delta;
+        internal FT_Pos8 rsb_delta;
+
+        internal IntPtr other; // void*
 
         //   typedef struct FT_Slot_InternalRec_*  FT_Slot_Internal;
         IntPtr @internal;
@@ -495,5 +533,29 @@ namespace DumbFont
         IntPtr glyph_hints; // void*
 
         FT_Int32 load_flags;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct FT_Outline_Funcs_4
+    {
+        internal IntPtr move_to;
+        internal IntPtr line_to;
+        internal IntPtr conic_to;
+        internal IntPtr cubic_to;
+
+        internal int shift;
+        internal FT_Pos4 delta;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct FT_Outline_Funcs_8
+    {
+        internal IntPtr move_to;
+        internal IntPtr line_to;
+        internal IntPtr conic_to;
+        internal IntPtr cubic_to;
+
+        internal int shift;
+        internal FT_Pos8 delta;
     }
 }
