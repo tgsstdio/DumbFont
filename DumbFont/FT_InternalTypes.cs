@@ -397,31 +397,31 @@ namespace DumbFont
     [StructLayout(LayoutKind.Sequential)]
     struct FT_Glyph_Metrics_4
     {
-        FT_Pos4 width;
-        FT_Pos4 height;
+        internal FT_Pos4 width;
+        internal FT_Pos4 height;
 
-        FT_Pos4 horiBearingX;
-        FT_Pos4 horiBearingY;
-        FT_Pos4 horiAdvance;
+        internal FT_Pos4 horiBearingX;
+        internal FT_Pos4 horiBearingY;
+        internal FT_Pos4 horiAdvance;
 
-        FT_Pos4 vertBearingX;
-        FT_Pos4 vertBearingY;
-        FT_Pos4 vertAdvance;
+        internal FT_Pos4 vertBearingX;
+        internal FT_Pos4 vertBearingY;
+        internal FT_Pos4 vertAdvance;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     struct FT_Glyph_Metrics_8
     {
-        FT_Pos8 width;
-        FT_Pos8 height;
+        internal FT_Pos8 width;
+        internal FT_Pos8 height;
 
-        FT_Pos8 horiBearingX;
-        FT_Pos8 horiBearingY;
-        FT_Pos8 horiAdvance;
+        internal FT_Pos8 horiBearingX;
+        internal FT_Pos8 horiBearingY;
+        internal FT_Pos8 horiAdvance;
 
-        FT_Pos8 vertBearingX;
-        FT_Pos8 vertBearingY;
-        FT_Pos8 vertAdvance;
+        internal FT_Pos8 vertBearingX;
+        internal FT_Pos8 vertBearingY;
+        internal FT_Pos8 vertAdvance;
     }
 
     [StructLayout(LayoutKind.Sequential)]

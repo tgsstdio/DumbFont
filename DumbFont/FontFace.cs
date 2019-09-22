@@ -227,8 +227,8 @@ namespace DumbFont
             var o = fd_outline_decompose(outline);
             //fd_outline_fix_corners(o);
             //fd_outline_subdivide(o);
-            var dst = fd_Outline.fd_outline_fix_thin_lines(o);
-            dst = fd_Outline.fd_outline_make_cells(dst);
+            var dst = fd_OutlineExtensions.fd_outline_fix_thin_lines(o);
+            dst = fd_OutlineExtensions.fd_outline_make_cells(dst);
             //}
 
             return dst;
@@ -349,8 +349,14 @@ namespace DumbFont
 
             return o;
         }
+        public class FontGlyph
+        {
+            public fd_Outline Outline { get; internal set; }
 
-        public fd_Outline GetGlyphOutline(char c)
+            public float Advance { get; internal set; }
+        }
+
+        public FontGlyph GetGlyph(char c)
         {
             if (mHandle == IntPtr.Zero)
                 throw new InvalidOperationException("GetGlyphOutline");
@@ -360,13 +366,25 @@ namespace DumbFont
                 FT_FaceRec4 face4 = Marshal.PtrToStructure<FT_FaceRec4>(mHandle);
                 // OR use OffsetOf() and ReadPointer()
                 var glyphData = Marshal.PtrToStructure<FT_GlyphSlotRec_4>(face4.glyph);
-                return fd_outline_convert(glyphData.outline, c);
+                var outline = fd_outline_convert(glyphData.outline, c);
+
+                return new FontGlyph
+                {
+                    Outline = outline,
+                    Advance = glyphData.metrics.horiAdvance / 64.0f,
+                };
             }
             else // if (Form == LongForm.Long8)
             {
                 var face8= Marshal.PtrToStructure<FT_FaceRec8>(mHandle);
                 var glyphData = Marshal.PtrToStructure<FT_GlyphSlotRec_8>(face8.glyph);
-                return fd_outline_convert(glyphData.outline, c);
+                var outline = fd_outline_convert(glyphData.outline, c);
+
+                return new FontGlyph
+                {
+                    Outline = outline,
+                    Advance = glyphData.metrics.horiAdvance / 64.0f,
+                };
             }
         }
 
